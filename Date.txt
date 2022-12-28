@@ -1,0 +1,120 @@
+package StreamLambdaAssignment;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import RelationLambda.Customer;
+import RelationLambda.Order;
+
+public class StreamDate {
+
+	public static void main(String[] args) {
+
+		List<Item> item_List = new ArrayList<Item>();
+		
+		item_List.add(new Item(134, "Moto24", 15000, "Mobiles"));
+		item_List.add(new Item(157, "Spiderman", 50, "Books"));
+		item_List.add(new Item(204, "Acer", 70000, "Laptops"));
+		item_List.add(new Item(210, "iPhone", 45000, "Mobiles"));
+		item_List.add(new Item(215, "Shirt", 1500, "Shirts"));
+
+		List<Customer> customer_List = new ArrayList<Customer>();
+
+		Customer customer1 = new Customer(1, "Tom", "male", " Bangalore");
+		Customer customer2 = new Customer(2, "Mike", "male", "Delhi");
+		Customer customer3 = new Customer(3, "Miley", "female", "Pune");
+		Customer customer4 = new Customer(4, "Kunal", "male", "Delhi");
+		Customer customer5 = new Customer(5, "Sakshi", "female", "Delhi");
+		
+		customer_List.add(customer1);
+		customer_List.add(customer2);
+		customer_List.add(customer3);
+		customer_List.add(customer4);
+		customer_List.add(customer5);
+		
+
+		List<Item> temp = new ArrayList<>();
+
+		LocalDate l1 = LocalDate.of(2021, 11, 12);
+		LocalDate ll = LocalDate.of(2021, 11, 14);
+
+		for (Item item : item_List) {
+			if ((item.getId() == 134) || item.getId() == 205)
+				temp.add(item);
+		}
+
+		Order order1 = new Order(1, "delivered", l1, ll, temp, customer1);
+		temp = new ArrayList<>();
+
+		for (Item item : item_List) {
+			if ((item.getId() == 204))
+				temp.add(item);
+		}
+
+		LocalDate l2 = LocalDate.of(2022, 5, 19);
+		LocalDate ll2 = LocalDate.of(2022, 5, 24);
+
+		Order order2 = new Order(2, "delivered", l2, ll2, temp, customer4);
+		temp = new ArrayList<>();
+
+		for (Item item : item_List) {
+			if ((item.getId() == 210) || item.getId() == 215)
+				temp.add(item);
+		}
+
+		LocalDate l3 = LocalDate.of(2021, 7, 31);
+		LocalDate ll3 = LocalDate.of(2021, 8, 04);
+		Order order3 = new Order(3, "delivered", l3, ll3, temp, customer2);
+		temp = new ArrayList<>();
+
+		for (Item item : item_List) {
+			if ((item.getId() == 204) || item.getId() == 215)
+				temp.add(item);
+		}
+
+		LocalDate l4 = LocalDate.of(2022, 10, 29);
+		// LocalDate ls2 = LocalDate.of(2022, 10, 29);
+
+		Order order4 = new Order(4, "pending", l4, null, temp, customer3);
+		temp = new ArrayList<>();
+
+		for (Item item : item_List) {
+			if ((item.getId() == 134))
+				temp.add(item);
+		}
+		LocalDate l5 = LocalDate.of(2021, 10, 30);
+
+		Order order5 = new Order(5, "pending", l5, null, temp, customer5);
+		temp = new ArrayList<>();
+
+		List<Order> Order_List = new ArrayList<Order>();
+
+		Order_List.add(order1);
+		Order_List.add(order2);
+		Order_List.add(order3);
+		Order_List.add(order4);
+		Order_List.add(order5);
+
+		//Order_List.forEach(System.out::println);
+		
+
+		List<Item> result = Order_List.stream().filter(o -> o.getOrderDate().compareTo(LocalDate.of(2022, 01, 1)) >= 0)
+				.filter(o -> o.getOrderDate().compareTo(LocalDate.of(2022, 10, 31)) <= 0)
+				.flatMap(o -> o.getItems().stream()).distinct().collect(Collectors.toList());
+
+
+		System.out.println("Obtain a list of items ordered by customers between 01-Jan-2022 and 31-Oct-2022");
+		result.stream().map(x->x.getName()).forEach(System.out::println);
+
+		
+		
+		
+	
+	
+		
+
+	}
+
+}
